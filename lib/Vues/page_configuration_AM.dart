@@ -218,7 +218,7 @@ class _ConfigurationAMState extends State<ConfigurationAM> {
                           screenSize: screenSize,
                           temp: "25 C",
                           nom: 'Caffe',
-                          path: "assets/images/bottle.png",
+                          path: "assets/images/eau.png",
                           size: 2.5,
                           max: 5,
                         ),
