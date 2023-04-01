@@ -5,7 +5,6 @@ import 'package:mobile1/viewmodels/DrinksListViewModel.dart';
 import 'package:mobile1/widget/DrinksGrid.dart';
 import 'package:provider/provider.dart';
 
-
 class DrinksScreen extends StatefulWidget {
   @override
   _DrinksScreenState createState() => _DrinksScreenState();
@@ -43,18 +42,16 @@ class _DrinksScreenState extends State<DrinksScreen> {
               const SizedBox(
                 height: 40,
               ),
-              
               Container(
                 width: double.infinity,
-                
                 child: Center(
                   child: SvgPicture.asset(
                     'images/logo.svg',
                     color: black,
+                    // width: MediaQuery.of(context).size.height * .8,
                   ),
                 ),
               ),
-             
               const SizedBox(
                 height: 40,
               ),
@@ -90,8 +87,6 @@ class _DrinksScreenState extends State<DrinksScreen> {
             ],
           ),
         ),
-
-        
       ),
     );
   }

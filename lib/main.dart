@@ -22,6 +22,9 @@ class MyApp extends StatelessWidget {
         ],
         child: DrinksScreen(),
       ),
+      routes: {
+        "home" : (context) => DrinksScreen()
+      }
     );
   }
 }

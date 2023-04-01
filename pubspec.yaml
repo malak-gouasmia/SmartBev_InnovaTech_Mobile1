@@ -29,6 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   provider: ^5.0.0
+  barcode_widget: ^2.0.1
   cached_network_image: ^3.0.0
   blurrycontainer: ^0.0.1
   flutter_svg: ^0.22.0

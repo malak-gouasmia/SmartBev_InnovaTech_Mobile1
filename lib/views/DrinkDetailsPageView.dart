@@ -2,16 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:mobile1/constant/constants.dart';
 import 'package:mobile1/viewmodels/DrinksListViewModel.dart';
 import 'package:mobile1/viewmodels/DrinksViewModel.dart';
+import 'package:mobile1/views/HomePageView.dart';
+import 'package:mobile1/views/PaymentPage.dart';
 
 import 'package:mobile1/widget/SizeOptionItem.dart';
 import 'package:provider/provider.dart';
 
-class DrinkDetailScreen extends StatelessWidget {
+class DrinkDetailScreen extends StatefulWidget {
   DrinksViewModel drink;
   DrinkDetailScreen(this.drink);
 
+  @override
+  _DrinkDetailScreenState createState() => _DrinkDetailScreenState();
+}
+
+class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
   static var screenHeight;
   static var screenWidth;
+
+  int selectedSize = 0;
+
+  List<String> sizeOptions = ["S", "M", "L"];
+
+  double _value = 2;
+  String _status = 'idle';
+  Color _statusColor = buttonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -22,74 +37,97 @@ class DrinkDetailScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    height: 440,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          this.drink.image,
-                        ),
+            // Expanded(
+            // child:
+            Stack(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        widget.drink.image,
                       ),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30)),
                     ),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30),
+                        bottomRight: Radius.circular(30)),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, top: 20, right: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // MultiProvider(
-                        // providers: [
-                        //   ChangeNotifierProvider(
-                        //     create: (_) => DrinksListViewModel(),
-                        //   ),
-                        // ],
-                        // child: IconButton(
-                        //   icon: Icon(
-                        //     Icons.arrow_back_ios_new,
-                        //     size: 20,
-                        //     color: Colors.white,
-                        //   ),
-                        //   onPressed: () {
-                        //     Navigator.of(context).push(MaterialPageRoute(
-                        //         builder: (context) => DrinksScreen()));
-                        //   },
-                        // ),
-                        // ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, top: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 20,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
+            // ),
             Expanded(
-              child: Padding(
+              child: GestureDetector(
+                  child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                      this.drink.title,
-                      style: TextStyle(
-                          fontSize: 25.0,
-                          color: black,
-                          fontWeight: FontWeight.bold),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5.0),
+                      child: Text(
+                        widget.drink.title,
+                        style: TextStyle(
+                            fontSize: 25.0,
+                            color: black,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Text(
-                      this.drink.description,
+                      widget.drink.description,
                       style: TextStyle(
                         color: black,
                       ),
                     ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      "Sucre",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        //  color: Color(0xffaeaeae),
+                        color: black,
+                      ),
+                    ),
+                    Slider(
+                        min: 0.0,
+                        max: 5.0,
+                        activeColor: buttonColor,
+                        inactiveColor: Color(0xffaeaeae),
+                        value: _value,
+                        divisions: 5,
+                        onChanged: (val) {
+                          setState(() {
+                            _value = val;
+                          });
+                        }),
                     SizedBox(
                       height: 5.0,
                     ),
@@ -102,25 +140,30 @@ class DrinkDetailScreen extends StatelessWidget {
                         color: black,
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        SizeOptionItem(
-                          index: 0,
-                          selected: true,
-                          sizeOption: "S",
-                        ),
-                        SizeOptionItem(
-                          index: 1,
-                          selected: false,
-                          sizeOption: "M",
-                        ),
-                        SizeOptionItem(
-                          index: 2,
-                          selected: false,
-                          sizeOption: "L",
-                        ),
-                      ],
+                    Container(
+                      // width: MediaQuery.of(context).size.width * .5,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          ...List.generate(sizeOptions.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedSize = index;
+                                });
+                              },
+                              child: SizeOptionItem(
+                                index: index,
+                                selected: selectedSize == index ? true : false,
+                                sizeOption: sizeOptions[index],
+                              ),
+                            );
+                          })
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -149,7 +192,7 @@ class DrinkDetailScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  this.drink.price,
+                                  widget.drink.price,
                                   style: TextStyle(
                                     color: buttonColor,
                                     fontWeight: FontWeight.bold,
@@ -161,10 +204,16 @@ class DrinkDetailScreen extends StatelessWidget {
                           ],
                         ),
                         MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentScreen()),
+                            );
+                          },
                           height: 55,
                           minWidth: 200,
-                          color: Color(0xffd17842),
+                          color: buttonColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
@@ -179,7 +228,7 @@ class DrinkDetailScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              ),
+              )),
             )
           ],
         ),

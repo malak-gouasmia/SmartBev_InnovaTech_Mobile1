@@ -33,9 +33,9 @@ class DrinksGrid extends StatelessWidget {
           },
           child: GridTile(
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-              ),
+              // decoration: BoxDecoration(
+              //   borderRadius: BorderRadius.circular(0),
+              // ),
               child: CircleImage(
                   imageUrl: drink.image,
                   ingredients: drink.ingredients,
