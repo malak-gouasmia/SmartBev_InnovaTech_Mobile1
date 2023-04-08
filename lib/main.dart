@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'Vues/page_bon_appetit.dart';
 
 import 'Vues/vol.dart';
+import 'Vues/vol2.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,11 +23,13 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: //vol(),
-          //  BonAppetit(),
-          CodeAM(),
-      //  Pub(),
-      // ConfigurationAM(),
+      home:
+          //alarme(),
+          vol2(),
+      //  BonAppetit(),
+      //CodeAM(),
+      //    Pub(),
+      //   ConfigurationAM(),
     );
   }
 }
