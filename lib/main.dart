@@ -1,33 +1,29 @@
-import 'package:mobile_1/Vues/page_configuration_AM.dart';
-
-import 'Vues/page_code_AM.dart';
-import 'Vues/page_pub.dart';
-
+// @dart=2.9
 import 'package:flutter/material.dart';
-
-import 'Vues/page_bon_appetit.dart';
-
-import 'Vues/vol.dart';
+import 'package:provider/provider.dart';
+import 'viewmodels/DrinksListViewModel.dart';
+import 'views/HomePageView.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: ' CUPPA',
-      theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => DrinksListViewModel(),
+          ),
+        ],
+        child: DrinksScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: //vol(),
-          //  BonAppetit(),
-          CodeAM(),
-      //  Pub(),
-      // ConfigurationAM(),
+      routes: {
+        "home" : (context) => DrinksScreen()
+      }
     );
   }
 }
-//EBDBCD
