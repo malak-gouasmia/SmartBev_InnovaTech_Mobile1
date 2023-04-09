@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:mobile1/models/DrinkModel.dart';
-import 'package:mobile1/services/Test.dart';
-import 'package:mobile1/viewmodels/DrinksViewModel.dart';
 
+import '../models/DrinkModel.dart';
+import '../services/Test.dart';
+import 'DrinksViewModel.dart';
 
 enum LoadingStatus {
   Completed,
@@ -18,13 +18,14 @@ class DrinksListViewModel with ChangeNotifier {
   void fetchDrinks() async {
     
     List<DrinkModel> _drinks = await TestAPI().getDrinks();
-   
+    print("hello");
+    print(_drinks);
     loadingStatus = LoadingStatus.Searching;
     notifyListeners();
-    this.drinks = _drinks.map((drink) => DrinksViewModel(drink: drink)).toList();
+    this.drinks =
+        _drinks.map((drink) => DrinksViewModel(drink: drink)).toList();
 
     if (this.drinks.isEmpty) {
-
       loadingStatus = LoadingStatus.Empty;
     } else {
       loadingStatus = LoadingStatus.Completed;

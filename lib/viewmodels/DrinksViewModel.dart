@@ -1,6 +1,5 @@
 
-
-import 'package:mobile1/models/DrinkModel.dart';
+import '../models/DrinkModel.dart';
 
 class DrinksViewModel {
   DrinkModel _drinkModel;

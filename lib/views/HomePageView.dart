@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile1/constant/constants.dart';
-import 'package:mobile1/viewmodels/DrinksListViewModel.dart';
-import 'package:mobile1/widget/DrinksGrid.dart';
+
 import 'package:provider/provider.dart';
+
+import '../constant/constants.dart';
+import '../viewmodels/DrinksListViewModel.dart';
+import '../widgets/DrinksGrid.dart';
+import 'page_code_AM.dart';
 
 class DrinksScreen extends StatefulWidget {
   @override
@@ -42,13 +45,39 @@ class _DrinksScreenState extends State<DrinksScreen> {
               const SizedBox(
                 height: 40,
               ),
-              Container(
-                width: double.infinity,
-                child: Center(
-                  child: SvgPicture.asset(
-                    'images/logo.svg',
-                    color: black,
-                    // width: MediaQuery.of(context).size.height * .8,
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 20, top: 20, right: 0),
+              //   child: Expanded(
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.end,
+              //       crossAxisAlignment: CrossAxisAlignment.center,
+              //       children: [
+              //         IconButton(
+              //           icon: Icon(Icons.settings),
+              //           iconSize: 40.0,
+              //           onPressed: () {
+              //             // Do something
+              //           },
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CodeAM()),
+                  );
+                },
+                child: Container(
+                  width: double.infinity,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/images/logo.svg',
+                      color: black,
+                      // width: MediaQuery.of(context).size.height * .8,
+                    ),
                   ),
                 ),
               ),
