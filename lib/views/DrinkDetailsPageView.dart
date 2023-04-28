@@ -216,7 +216,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                                 ),
                               ),
                               Text(
-                                widget.drink.price,
+                                widget.drink.price.toString(),
                                 style: TextStyle(
                                   color: buttonColor,
                                   fontWeight: FontWeight.bold,
@@ -232,7 +232,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                           _command = Command(
                               time: DateTime.now().toString(),
                               quantity_sugar: _value,
-                              price: widget.drink.price,
+                              price: widget.drink.price.toString(),
                               size: _selectedSize + 1,
                               num_serie_destributeur: "ABDCRT",
                               id_boisson: widget.drink.id);

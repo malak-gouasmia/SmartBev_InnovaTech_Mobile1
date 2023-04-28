@@ -40,9 +40,10 @@ class DrinksGrid extends StatelessWidget {
               // ),
               child: CircleImage(
                   imageUrl: drink.image,
-                  ingredients: drink.ingredients,
+                  // ingredients: drink.ingredients,
+                  ingredients:"Coffee+Milk+Cacao",
                   title: drink.title,
-                  price: drink.price),
+                  price: drink.price.toString()),
             ),
           ),
         );

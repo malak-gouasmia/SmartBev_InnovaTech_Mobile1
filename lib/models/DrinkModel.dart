@@ -1,29 +1,32 @@
 class DrinkModel {
   int id;
+  String time;
   String title;
   String description;
-  String price;
-  String ingredients;
+ double price;
+  // String ingredients;
   String image;
 
   DrinkModel(
       {required this.id,
+      required this.time,
       required this.title,
       required this.description,
       required this.price,
-      required this.ingredients,
+      // required this.ingredients,
       required this.image});
 
   factory DrinkModel.fromJson(Map<String, dynamic> json) {
     //another constractor that take json objects and return a model
 
     return DrinkModel(
-        id: json['id'],
-        title: json['title'],
-        description: json['description'],
-        price: json['price'],
-        ingredients: json['ingredients'],
-        image: json['image']);
+        id: json['id_boisson'],
+        time:json['duree_preparation_boisson'],
+        title: json['libelle_boisson'],
+        description: json['description_boisson'],
+        price: json['prix_boisson'],
+        // ingredients: json['ingredients'],
+        image: json['path_image_boisson']);
   }
 
 //to transform to json
@@ -33,7 +36,7 @@ class DrinkModel {
       "description": description,
       "title": title,
       "price": price,
-      "ingrdients": ingredients,
+      // "ingrdients": ingredients,
       "image": image
     };
   }

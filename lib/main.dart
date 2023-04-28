@@ -3,10 +3,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:mobile_1/services/NotificationsService.dart';
-import 'package:mobile_1/views/vol2.dart';
+
 import 'package:provider/provider.dart';
-import 'package:workmanager/workmanager.dart';
+
 
 import 'viewmodels/DrinksListViewModel.dart';
 import 'viewmodels/NotificationsViewModel.dart';

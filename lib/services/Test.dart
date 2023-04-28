@@ -4,9 +4,6 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../models/DrinkModel.dart';
 
 class TestAPI {
-
-
-  
   Future<List<DrinkModel>> getDrinks() async {
     //  String response = await rootBundle.loadString('data/data.json');
 

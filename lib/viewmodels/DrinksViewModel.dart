@@ -1,4 +1,3 @@
-
 import '../models/DrinkModel.dart';
 
 class DrinksViewModel {
@@ -6,9 +5,10 @@ class DrinksViewModel {
 
   DrinksViewModel({required DrinkModel drink}) : _drinkModel = drink;
 
-int get id {
+  int get id {
     return _drinkModel.id;
   }
+
   String get title {
     return _drinkModel.title;
   }
@@ -17,7 +17,7 @@ int get id {
     return _drinkModel.description;
   }
 
-  String get price {
+  double get price {
     return _drinkModel.price;
   }
 
@@ -25,7 +25,7 @@ int get id {
     return _drinkModel.image;
   }
 
-  String get ingredients {
-    return _drinkModel.ingredients;
-  }
+  // String get ingredients {
+  //   return _drinkModel.ingredients;
+  // }
 }
