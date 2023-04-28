@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile_1/viewmodels/PaymentViewModel.dart';
 
 import '../constant/constants.dart';
+import '../viewmodels/CommandViewModel.dart';
 import 'page_pub.dart';
 
 class PaymentScreen extends StatelessWidget {
-  const PaymentScreen({super.key});
+  final int? commandId;
+  const PaymentScreen(this.commandId, {super.key});
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -107,50 +112,98 @@ class PaymentScreen extends StatelessWidget {
               width: screenSize.width,
             ),
             MaterialButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          side: BorderSide(color: buttonColor, width: 2),
-                        ),
-                        title: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              'assets/images/check.png',
-                              // width: double.infinity,
-                              // fit: BoxFit.cover,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(
-                                  16.0), // set margin to 16.0 on all sides
-                              child: Text(
-                                "Le paiement  est effectué avec succès",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: screenSize.width > 480 ? 20 : 16,
+              onPressed: () async {
+                final payment =
+                    await PaymentViewModel().verifyPayement(commandId!);
+                if (payment) {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            side: BorderSide(color: buttonColor, width: 2),
+                          ),
+                          title: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                'assets/images/check.png',
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(
+                                    16.0), // set margin to 16.0 on all sides
+                                child: Text(
+                                  "Le paiement  est effectué avec succès",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: screenSize.width > 480 ? 20 : 16,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        content: Text(
-                          "Votre commande sera lancée dans quelques instants",
-                          textAlign: TextAlign.center,
-                        ),
-                        backgroundColor: backgroundColor,
-                      );
-                    });
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (context) {
-                    return Pub();
-                  }));
-                });
+                            ],
+                          ),
+                          content: Text(
+                            "Votre commande sera lancée dans quelques instants",
+                            textAlign: TextAlign.center,
+                          ),
+                          backgroundColor: backgroundColor,
+                        );
+                      });
+                  final instructions = await CommandViewModel()
+                      .getCommandInstructions(commandId!);
+                
+                  print(instructions);
+                  Future.delayed(Duration(seconds: 3), () {
+                    Navigator.of(context)
+                        .pushReplacement(MaterialPageRoute(builder: (context) {
+                      return Pub();
+                    }));
+                  });
+                } else {
+                  showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            side: BorderSide(color: buttonColor, width: 2),
+                          ),
+                          title: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                'assets/images/check.png',
+                                // width: double.infinity,
+                                // fit: BoxFit.cover,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.all(
+                                    16.0), // set margin to 16.0 on all sides
+                                child: Text(
+                                  "Le paiement  n'est pas encore effectué ",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: screenSize.width > 480 ? 20 : 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          content: Text(
+                            "Votre commande sera lancée aprés paiement",
+                            textAlign: TextAlign.center,
+                          ),
+                          backgroundColor: backgroundColor,
+                        );
+                      });
+                  Future.delayed(Duration(seconds: 3)).then((value) {
+                    Navigator.of(context).pop();
+                  });
+                }
+                ;
               },
               height: screenSize.width > 480
                   ? screenSize.width * 0.09

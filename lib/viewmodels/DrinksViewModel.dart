@@ -6,6 +6,9 @@ class DrinksViewModel {
 
   DrinksViewModel({required DrinkModel drink}) : _drinkModel = drink;
 
+int get id {
+    return _drinkModel.id;
+  }
   String get title {
     return _drinkModel.title;
   }

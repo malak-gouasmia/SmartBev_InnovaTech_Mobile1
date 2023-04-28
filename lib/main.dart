@@ -3,11 +3,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mobile_1/services/NotificationsService.dart';
 import 'package:mobile_1/views/vol2.dart';
 import 'package:provider/provider.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'viewmodels/DrinksListViewModel.dart';
+import 'viewmodels/NotificationsViewModel.dart';
 import 'views/HomePageView.dart';
 
 final double _fixedLatitude = 36.6868963;
@@ -18,7 +20,9 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({key}) : super(key: key);
+  final NotificationsViewModel notificationsViewModel =
+      NotificationsViewModel();
+  MyApp({key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -91,6 +95,7 @@ Future<Position> _getGeoLocationPosition() async {
       _locationMatch = true;
     } else {
       print("here is a change");
+      NotificationsViewModel().sendNotificationVol("45677", "C'est un vol");
       _locationMatch = false;
     }
   }
@@ -111,6 +116,7 @@ Future<bool> _checkLocation(Position position) async {
     if (distanceInMeters < 100) {
       // do something if the current position is within 100 meters of the fixed position
       print("here is a match");
+      NotificationsViewModel().sendNotificationVol("45677", "C'est un vol");
 
       return true;
     } else {

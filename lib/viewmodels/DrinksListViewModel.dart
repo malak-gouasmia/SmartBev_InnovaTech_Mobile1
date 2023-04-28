@@ -18,8 +18,8 @@ class DrinksListViewModel with ChangeNotifier {
   void fetchDrinks() async {
     
     List<DrinkModel> _drinks = await TestAPI().getDrinks();
-    print("hello");
-    print(_drinks);
+   
+   
     loadingStatus = LoadingStatus.Searching;
     notifyListeners();
     this.drinks =

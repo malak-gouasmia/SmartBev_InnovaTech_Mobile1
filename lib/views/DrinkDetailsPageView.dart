@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../constant/constants.dart';
+import '../models/CommandModel.dart';
+import '../viewmodels/CommandViewModel.dart';
 import '../viewmodels/DrinksViewModel.dart';
 import '../widgets/SizeOptionItem.dart';
 import 'PaymentPage.dart';
@@ -14,13 +17,12 @@ class DrinkDetailScreen extends StatefulWidget {
 }
 
 class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
-  
-
-  int selectedSize = 0;
+  late Command _command;
+  int _selectedSize = 0;
 
   List<String> sizeOptions = ["S", "M", "L"];
 
-  double _value = 2;
+  double _value = 2; //sucre
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +119,6 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                     style: TextStyle(
                       fontSize: screenSize.width > 480 ? 25 : 20,
                       fontWeight: FontWeight.bold,
-                      //  color: Color(0xffaeaeae),
                       color: black,
                     ),
                   ),
@@ -134,9 +135,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                           _value = val;
                         });
                       }),
-                  // SizedBox(
-                  //   height: 5.0,
-                  // ),
+              
                   SizedBox(
                     height: screenSize.width > 480
                         ? screenSize.width * 0.04
@@ -161,12 +160,12 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                           return GestureDetector(
                             onTap: () {
                               setState(() {
-                                selectedSize = index;
+                                _selectedSize = index;
                               });
                             },
                             child: SizeOptionItem(
                               index: index,
-                              selected: selectedSize == index ? true : false,
+                              selected: _selectedSize == index ? true : false,
                               sizeOption: sizeOptions[index],
                             ),
                           );
@@ -229,11 +228,23 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                         ],
                       ),
                       MaterialButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          _command = Command(
+                              time: DateTime.now().toString(),
+                              quantity_sugar: _value,
+                              price: widget.drink.price,
+                              size: _selectedSize + 1,
+                              num_serie_destributeur: "ABDCRT",
+                              id_boisson: widget.drink.id);
+
+                          final commandId =
+                              await CommandViewModel().createCommand(_command);
+                          print(commandId);
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PaymentScreen()),
+                                builder: (context) => PaymentScreen(commandId)),
                           );
                         },
                         height: screenSize.width > 480
