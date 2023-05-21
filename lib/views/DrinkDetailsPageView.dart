@@ -1,6 +1,10 @@
+import 'dart:isolate';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/constants.dart';
+import '../services/camera_handler.dart';
 import '../viewmodels/DrinksViewModel.dart';
 import '../widgets/SizeOptionItem.dart';
 import 'PaymentPage.dart';
@@ -24,6 +28,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CameraHandler cameraHandler = CameraHandler();
     var screenSize = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -229,12 +234,13 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                         ],
                       ),
                       MaterialButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => PaymentScreen()),
                           );
+                          compute(startIsolate() as ComputeCallback<Null, dynamic>, null);
                         },
                         height: screenSize.width > 480
                             ? screenSize.width * 0.09
@@ -260,5 +266,29 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
         ),
       ),
     );
+  }
+
+
+
+
+
+  //methods to run camera + face detector in another thread
+
+
+
+  static void isolateFunction(SendPort sendPort) async {
+
+    sendPort.send('Isolate message');
+  }
+
+
+  Future<void> startIsolate() async {
+    try {
+      CameraHandler cameraHandler = CameraHandler();
+      await cameraHandler.initializeCamera();
+      print('Camera initialized successfully');
+    } catch (error) {
+      print('Error initializing camera: $error');
+    }
   }
 }

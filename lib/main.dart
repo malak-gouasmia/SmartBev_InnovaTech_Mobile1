@@ -7,14 +7,7 @@ import 'views/HomePageView.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  CameraHandler cameraHandler = CameraHandler();
-  try {
-    cameraHandler.initializeCamera();
-    runApp(MyApp());
-  } catch(e) {
-    print("Camera exception ${e.message}");
-  }
-
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

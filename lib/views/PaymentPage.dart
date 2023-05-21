@@ -6,9 +6,13 @@ import '../constant/constants.dart';
 import 'page_pub.dart';
 
 class PaymentScreen extends StatelessWidget {
+
   const PaymentScreen({super.key});
+
+
   @override
   Widget build(BuildContext context) {
+
     var screenSize = MediaQuery.of(context).size;
     var data = "";
     return Scaffold(
@@ -106,13 +110,13 @@ class PaymentScreen extends StatelessWidget {
                   : screenSize.width * 0.1,
               width: screenSize.width,
             ),
-            MaterialButton(
+            MaterialButton( //commader button => lunch bg cam here
               onPressed: () {
                 showDialog(
                     context: context,
                     barrierDismissible: false,
                     builder: (context) {
-                      return AlertDialog(
+                      return AlertDialog( //paiement effectué popup
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0),
                           side: BorderSide(color: buttonColor, width: 2),
@@ -145,7 +149,7 @@ class PaymentScreen extends StatelessWidget {
                         backgroundColor: backgroundColor,
                       );
                     });
-                Future.delayed(Duration(seconds: 3), () {
+                Future.delayed(Duration(seconds: 3), () { //time waited before launching pub
                   Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (context) {
                     return Pub();
