@@ -3,10 +3,11 @@ import 'dart:ffi';
 
 import 'package:http/http.dart' as http;
 
+import '../constant/constants.dart';
 import '../models/CommandModel.dart';
 
 class CommandsAPI {
-  static const baseUrl = 'http://192.168.1.4:8000';
+  
 
   static Future<int> createCommand(Command command) async {
     final url = '$baseUrl/commandes';
@@ -49,9 +50,9 @@ class CommandsAPI {
   static Future<String> getCommandInstructions(int id) async {
     final url = '$baseUrl/commandes/$id/instructions';
     final response = await http.get(
-      Uri.parse(url),
+      Uri.parse(url), 
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json', 
       },
     );
 

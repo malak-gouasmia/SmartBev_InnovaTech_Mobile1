@@ -1,11 +1,12 @@
 import 'package:http/http.dart' as http;
+import 'package:mobile_1/constant/constants.dart';
 
 class NotificationsAPI {
   Future<String> sendNotificationVol(
       String numero_serie_distributeur, String description) async {
     final response = await http.get(
       Uri.parse(
-          'http://192.168.1.4:8000/api/notification.management/notify-adm-am-of-vol-attempt'),
+          'http://$baseUrl/api/notification.management/notify-adm-am-of-vol-attempt'),
       // body: {
       //   'numero_serie_distributeur': numero_serie_distributeur,
       //   'description': description,

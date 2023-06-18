@@ -11,6 +11,8 @@ import 'viewmodels/DrinksListViewModel.dart';
 import 'viewmodels/NotificationsViewModel.dart';
 import 'views/HomePageView.dart';
 
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+
 final double _fixedLatitude = 36.6868963;
 final double _fixedLongitude = 2.9684808;
 bool _locationMatch = true;
@@ -28,6 +30,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -46,16 +51,24 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(minutes: 1), (timer) {
-      _getGeoLocationPosition().then((value) {
-        setState(() {
-          _locationMatch = _checkLocation(value) as bool;
-          print(_locationMatch); // Print locationMatch to the console
-        });
-      });
-    });
+
+   
+
+    // Timer.periodic(Duration(minutes: 1), (timer) {
+    //   _getGeoLocationPosition().then((value) {
+    //     setState(() {
+    //       _locationMatch = _checkLocation(value) as bool;
+    //       print(_locationMatch); // Print locationMatch to the console
+    //     });
+    //   });
+    // });
+
+    // Connect to the server
+ 
   }
 }
+
+
 
 Future<Position> _getGeoLocationPosition() async {
   bool serviceEnabled;

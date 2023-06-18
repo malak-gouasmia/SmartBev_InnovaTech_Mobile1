@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:barcode_widget/barcode_widget.dart';
@@ -8,14 +9,75 @@ import 'package:mobile_1/viewmodels/PaymentViewModel.dart';
 import '../constant/constants.dart';
 import '../viewmodels/CommandViewModel.dart';
 import 'page_pub.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   final int? commandId;
-  const PaymentScreen(this.commandId, {super.key});
+  final commandJson;
+  const PaymentScreen(this.commandId, this.commandJson, {Key? key});
+
+  @override
+  _PaymentScreenState createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
+  late IO.Socket socket;
+
+  @override
+  void initState() {
+    initThesocket();
+    super.initState();
+    // Connect to WebSocket server
+  }
+
+  initThesocket() {
+    socket = IO.io('http://10.0.10.231:3000/', {
+      'transports': ['websocket'],
+      'autoConnect': false
+    });
+
+    socket.connect();
+
+    socket.onConnect((_) {
+      print("connected to the server");
+    });
+
+    socket.emit("command_id", widget.commandId);
+
+    socket.on('msg', (data) {
+      if (data == 'OK') {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (context) {
+          return Pub();
+        }));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // Disconnect from WebSocket server when the widget is disposed
+    socket.disconnect();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var data = "";
+
+    final jsonData = {
+      "id_cmd": widget.commandId,
+      "time_cmd": DateTime.now().toUtc().toIso8601String(),
+      "prix_cmd": widget.commandJson['prix_cmd'],
+      "quantite_sucre": widget.commandJson['quantite_sucre'],
+      "taille_goblet": widget.commandJson['taille_goblet'],
+      "etat_cmd": "initialisée",
+      "id_boisson": widget.commandJson['id_boisson'],
+      "id_consommateur": null,
+      "numero_serie_distributeur": "ABDCRT",
+    };
+    final data = jsonEncode(jsonData);
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
@@ -45,6 +107,7 @@ class PaymentScreen extends StatelessWidget {
                           color: black,
                         ),
                         onPressed: () {
+                          dispose();
                           Navigator.of(context).pop();
                         },
                       ),
@@ -111,116 +174,6 @@ class PaymentScreen extends StatelessWidget {
                   : screenSize.width * 0.1,
               width: screenSize.width,
             ),
-            MaterialButton(
-              onPressed: () async {
-                final payment =
-                    await PaymentViewModel().verifyPayement(commandId!);
-                if (payment) {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: BorderSide(color: buttonColor, width: 2),
-                          ),
-                          title: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/images/check.png',
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(
-                                    16.0), // set margin to 16.0 on all sides
-                                child: Text(
-                                  "Le paiement  est effectué avec succès",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: screenSize.width > 480 ? 20 : 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          content: Text(
-                            "Votre commande sera lancée dans quelques instants",
-                            textAlign: TextAlign.center,
-                          ),
-                          backgroundColor: backgroundColor,
-                        );
-                      });
-                  final instructions = await CommandViewModel()
-                      .getCommandInstructions(commandId!);
-                
-                  print(instructions);
-                  Future.delayed(Duration(seconds: 3), () {
-                    Navigator.of(context)
-                        .pushReplacement(MaterialPageRoute(builder: (context) {
-                      return Pub();
-                    }));
-                  });
-                } else {
-                  showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            side: BorderSide(color: buttonColor, width: 2),
-                          ),
-                          title: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                'assets/images/check.png',
-                                // width: double.infinity,
-                                // fit: BoxFit.cover,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(
-                                    16.0), // set margin to 16.0 on all sides
-                                child: Text(
-                                  "Le paiement  n'est pas encore effectué ",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: screenSize.width > 480 ? 20 : 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          content: Text(
-                            "Votre commande sera lancée aprés paiement",
-                            textAlign: TextAlign.center,
-                          ),
-                          backgroundColor: backgroundColor,
-                        );
-                      });
-                  Future.delayed(Duration(seconds: 3)).then((value) {
-                    Navigator.of(context).pop();
-                  });
-                }
-                ;
-              },
-              height: screenSize.width > 480
-                  ? screenSize.width * 0.09
-                  : screenSize.width * 0.15,
-              minWidth: screenSize.width * 0.5,
-              color: buttonColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: Text(
-                "Commander",
-                style: TextStyle(
-                  fontSize: screenSize.width > 480 ? 18 : 14,
-                  color: Colors.white,
-                ),
-              ),
-            )
           ],
         ),
       ),

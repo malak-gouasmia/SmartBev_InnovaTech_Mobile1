@@ -45,24 +45,7 @@ class _DrinksScreenState extends State<DrinksScreen> {
               const SizedBox(
                 height: 40,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 20, top: 20, right: 0),
-              //   child: Expanded(
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.end,
-              //       crossAxisAlignment: CrossAxisAlignment.center,
-              //       children: [
-              //         IconButton(
-              //           icon: Icon(Icons.settings),
-              //           iconSize: 40.0,
-              //           onPressed: () {
-              //             // Do something
-              //           },
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
+            
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -74,7 +57,7 @@ class _DrinksScreenState extends State<DrinksScreen> {
                   width: double.infinity,
                   child: Center(
                     child: SvgPicture.asset(
-                      'assets/images/logo.svg',
+                      './assets/images/logo.svg',
                       color: black,
                       // width: MediaQuery.of(context).size.height * .8,
                     ),

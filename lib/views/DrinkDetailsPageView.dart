@@ -10,6 +10,7 @@ import 'PaymentPage.dart';
 
 class DrinkDetailScreen extends StatefulWidget {
   DrinksViewModel drink;
+
   DrinkDetailScreen(this.drink);
 
   @override
@@ -19,14 +20,22 @@ class DrinkDetailScreen extends StatefulWidget {
 class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
   late Command _command;
   int _selectedSize = 0;
+  late double price;
 
   List<String> sizeOptions = ["S", "M", "L"];
 
   double _value = 2; //sucre
 
+   @override
+  void initState() {
+    super.initState();
+    price = widget.drink.price;
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SingleChildScrollView(
@@ -43,7 +52,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage(
-                        widget.drink.image,
+                        './assets/' + widget.drink.image,
                       ),
                     ),
                     borderRadius: BorderRadius.only(
@@ -135,7 +144,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                           _value = val;
                         });
                       }),
-              
+
                   SizedBox(
                     height: screenSize.width > 480
                         ? screenSize.width * 0.04
@@ -161,6 +170,8 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                             onTap: () {
                               setState(() {
                                 _selectedSize = index;
+                                price =
+                                    widget.drink.price * (_selectedSize + 1);
                               });
                             },
                             child: SizeOptionItem(
@@ -216,7 +227,7 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                                 ),
                               ),
                               Text(
-                                widget.drink.price.toString(),
+                                price.toString(),
                                 style: TextStyle(
                                   color: buttonColor,
                                   fontWeight: FontWeight.bold,
@@ -232,19 +243,29 @@ class _DrinkDetailScreenState extends State<DrinkDetailScreen> {
                           _command = Command(
                               time: DateTime.now().toString(),
                               quantity_sugar: _value,
-                              price: widget.drink.price.toString(),
+                              price: price,
                               size: _selectedSize + 1,
                               num_serie_destributeur: "ABDCRT",
                               id_boisson: widget.drink.id);
 
                           final commandId =
                               await CommandViewModel().createCommand(_command);
+                          print("the id of the created boisson ");
                           print(commandId);
+                          print("sugar ius");
+                          print(_command.quantity_sugar);
+                          print("size");
+                          print(_command.size);
+                          print("price");
+                          print(price);
 
+                          Map<String, dynamic> commandJson = _command.toJson();
+                          print(commandJson.toString());
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PaymentScreen(commandId)),
+                                builder: (context) =>
+                                    PaymentScreen(commandId, commandJson)),
                           );
                         },
                         height: screenSize.width > 480

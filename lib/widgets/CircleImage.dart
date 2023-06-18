@@ -36,7 +36,7 @@ class CircleImage extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                  imageUrl,
+                  'assets/$imageUrl',
                   fit: BoxFit.cover,
                 ),
 

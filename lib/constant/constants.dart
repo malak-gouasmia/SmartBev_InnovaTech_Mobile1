@@ -5,3 +5,6 @@ Color white = Color(0xFFFFFFFF);
 Color black = Color(0xFF000000);
 Color buttonColor = const Color(0xffD27842);
 Color greyColor = const Color(0xff605A57);
+
+
+const baseUrl = 'http://10.0.10.231:8000';

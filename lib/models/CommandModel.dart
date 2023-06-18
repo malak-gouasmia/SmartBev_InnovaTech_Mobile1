@@ -1,15 +1,14 @@
-class Command{
- 
+class Command {
+  
   String time;
   double quantity_sugar;
-  String price;
+  double price;
   int size;
   String num_serie_destributeur;
   int id_boisson;
 
   Command(
-      {
-      required this.time,
+      {required this.time,
       required this.quantity_sugar,
       required this.price,
       required this.size,
@@ -20,7 +19,6 @@ class Command{
     //another constractor that take json objects and return a model
 
     return Command(
-       
         time: json['time_cmd'],
         price: json['prix_cmd'],
         quantity_sugar: json['quantite_sucre'],
@@ -32,9 +30,8 @@ class Command{
 //to transform to json
   Map<String, dynamic> toJson() {
     return {
-     
       "time_cmd": time,
-      "prix_cmd":price,
+      "prix_cmd": price,
       "quantite_sucre": quantity_sugar,
       "taille_goblet": size,
       "id_boisson": id_boisson,
@@ -42,4 +39,3 @@ class Command{
     };
   }
 }
-
